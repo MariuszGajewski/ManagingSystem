@@ -1,0 +1,224 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="thymeleaf.org">
+<head>
+      <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Free Bootstrap Admin Template : Two Page</title>
+	<!-- BOOTSTRAP STYLES-->
+
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet" />
+    <link th:href="@{/css/bootstrap-select.css.css}" rel="stylesheet" />
+     <!-- FONTAWESOME STYLES-->
+    <link th:href="@{/css/font-awesome.css}" rel="stylesheet" />
+        <!-- CUSTOM STYLES-->
+    <link th:href="@{/css/custom.css}" rel="stylesheet" />
+     <!-- GOOGLE FONTS-->
+
+    <!-- Custom styles for this template -->
+    <link th:href="@{/css/form-validation.css}" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+
+</head>
+<body>
+    <div id="wrapper">
+         <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="adjust-nav">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#"><i class="fa fa-square-o "></i>&nbsp;UserManager</a>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="">
+                            <img src="/img/find_user.png" class="img-responsive" style="height: 25px" />
+                        </a></li>
+                        <li><a href="">Logout</a></li>
+
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+        <!-- /. NAV TOP  -->
+        <nav class="navbar-default navbar-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav" id="main-menu">
+                    <li>
+                        <a th:href="@{index}"><i class="fa fa-desktop "></i>Home</a>
+                    </li>
+                    <li>
+                        <a href=""><i class="fa fa-edit "></i>Managing panel<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="">Manage users</a>
+                            </li>
+                            <li>
+                                <a href="">Manage user groups</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href=""><i class="fa fa-table "></i>Table Examples</a>
+                    </li>
+
+                    <li>
+                        <a href=""><i class="fa fa-bar-chart-o"></i>Mettis Charts</a>
+                    </li>
+                </ul>
+
+            </div>
+
+        </nav>
+        <!-- /. NAV SIDE  -->
+        <div id="page-wrapper" >
+            <div id="page-inner">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2 class="mb-3">Add new user</h2>
+                    </div>
+                </div>              
+                 <!-- /. ROW  -->
+                  <hr />
+                <div class="row">
+                    <div class="col-md-8 order-md-1">
+
+                        <form method="post" th:action="@{/addUser}" th:object="${userForm}">
+                            <div class="mb-3">
+                                <label for="username">Username</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="username" placeholder="Username" th:field="*{userName}" required>
+                                    <div class="invalid-feedback" style="width: 100%;">
+                                        Your username is required.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="firstName">First name</label>
+                                    <input type="text" class="form-control" id="firstName" placeholder="First name" th:field="*{firstName}" required>
+                                    <div class="invalid-feedback">
+                                        Valid first name is required.
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="lastName">Last name</label>
+                                    <input type="text" class="form-control" id="lastName" placeholder="Last name" th:field="*{lastName}"  required>
+                                    <div class="invalid-feedback">
+                                        Valid last name is required.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="password">Password<span class="text-muted"></span></label>
+                                <input type="password" class="form-control" id="password" placeholder="Please enter password" th:field="*{password}" required>
+                                <div class="invalid-feedback">
+                                    Please enter a valid email address for shipping updates.
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="rpassword">Repeat password<span class="text-muted"></span></label>
+                                <input type="password" class="form-control" id="rpassword" placeholder="Please repeat password" th:field="*{repeatedPassword}"  required>
+                                <div class="invalid-feedback">
+                                    Please enter a valid email address for shipping updates.
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-5 mb-3">
+                                    <div class="panel-group" id="accordion">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="collapsed">Choose user groups</a>
+                                                </h4>
+                                            </div>
+                                            <div id="collapseOne" class="panel-collapse collapse" style="height: 0px;">
+                                                <div class="panel-body">
+                                                    <select class="" id="group" th:field="*{groupsName}" required multiple="multiple">
+                                                        <option th:each="group : ${groupList}" th:value="${group.getId()}" th:text="${group.getName()}"></option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="invalid-feedback">
+                                        Please select a valid country.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-5" id="dateSelector">
+                                  <select id="years" onchange="getMothsList(this.value);" required>
+                                      <option disabled selected>Select year</option>
+                                  </select>
+                                  <select id="months"  onchange="getDaysList(this.value);" required>
+                                      <option disabled selected>Select month</option>
+                                  </select>
+                                  <select id="days" onchange="createDate(this.value);" required>
+                                      <option disabled selected>Select day</option>
+                                  </select>
+                                  <input type="text" id="date" th:field="*{stringDate}" style="display: none">
+                              </div>
+                            </div>
+                            <hr class="mb-4">
+                            <div>
+                                <input type="checkbox" id="same-address">
+                                <label  for="same-address">Shipping address is the same as my billing address</label>
+                            </div>
+                            <div>
+                                <input type="checkbox"  id="save-info">
+                                <label for="save-info">Save this information for next time</label>
+                            </div>
+                            <hr class="mb-4">
+
+                            <h4 class="mb-3">Payment</h4>
+
+                            <div class="d-block my-3">
+                                <div class="custom-control custom-radio">
+                                    <input id="credit" name="paymentMethod" type="radio" class="custom-control-input" checked required>
+                                    <label class="custom-control-label" for="credit">Credit card</label>
+                                </div>
+                                <div class="custom-control custom-radio">
+                                    <input id="debit" name="paymentMethod" type="radio" class="custom-control-input" required>
+                                    <label class="custom-control-label" for="debit">Debit card</label>
+                                </div>
+                                <div class="custom-control custom-radio">
+                                    <input id="paypal" name="paymentMethod" type="radio" class="custom-control-input" required>
+                                    <label class="custom-control-label" for="paypal">PayPal</label>
+                                </div>
+                            </div>
+                            <hr class="mb-4">
+
+                            <button class="btn btn-primary btn-lg btn-block" type="submit">Add user</button>
+                        </form>
+                    </div>
+                </div>
+              
+                 <!-- /. ROW  -->           
+            </div>
+             <!-- /. PAGE INNER  -->
+            </div>
+         <!-- /. PAGE WRAPPER  -->
+        </div>
+     <!-- /. WRAPPER  -->
+    <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
+    <!-- JQUERY SCRIPTS -->
+
+    <script src="/js/jquery-1.10.2.js"></script>
+      <!-- BOOTSTRAP SCRIPTS -->
+    <script src="/js/bootstrap.min.js"></script>
+    <!-- METISMENU SCRIPTS -->
+    <script src="/js/jquery.metisMenu.js"></script>
+    <script src="/js/bootstrap-select.js"></script>
+      <!-- CUSTOM SCRIPTS -->
+    <script src="/js/custom.js"></script>
+    <script src="/js/myScripts.js"></script>
+
+</body>
+</html>

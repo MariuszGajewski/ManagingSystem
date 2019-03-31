@@ -1,0 +1,217 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="thymeleaf.org">
+<head>
+      <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add new user</title>
+	<!-- BOOTSTRAP STYLES-->
+
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet" />
+    <link th:href="@{/css/bootstrap-select.css}" rel="stylesheet" />
+     <!-- FONTAWESOME STYLES-->
+    <link th:href="@{/css/font-awesome.css}" rel="stylesheet" />
+        <!-- CUSTOM STYLES-->
+    <link th:href="@{/css/custom.css}" rel="stylesheet" />
+     <!-- GOOGLE FONTS-->
+
+    <!-- Custom styles for this template -->
+    <link th:href="@{/css/form-validation.css}" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+
+</head>
+<body>
+    <div id="wrapper">
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="adjust-nav">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" th:href="@{/index}"><i class="fa fa-square-o "></i>&nbsp;UserManager</a>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="">
+                            <img src="/img/find_user.png" class="img-responsive" style="height: 25px" />
+                        </a></li>
+                        <li><a href="/logout">Logout</a></li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- /. NAV TOP  -->
+        <nav class="navbar-default navbar-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav" id="main-menu">
+                    <li>
+                        <a th:href="@{index}"><i class="fa fa-desktop "></i>Home</a>
+                    </li>
+                    <li>
+                        <a href=""><i class="fa fa-edit "></i>Managing panel<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a th:href="@{/userManager}">Manage users</a>
+                            </li>
+                            <li>
+                                <a th:href="@{/groupManager}">Manage user groups</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <!-- /. NAV SIDE  -->
+        <div id="page-wrapper" >
+            <div id="page-inner">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2 th:text="${userForm.getUserId() > 0} ? 'Change user details' : 'Add new user'"></h2>
+                    </div>
+                    <div class="col-md-3">
+                        <button class="btn btn-default" onclick="location.href='/userManager';"><<</button>
+                    </div>
+                </div>              
+                 <!-- /. ROW  -->
+                  <hr />
+                <div class="row">
+                    <div class="col-md-8 order-md-1">
+                        <form id="userData" method="post" th:action="@{/addUser}"
+                              th:object="${userForm}" onsubmit="return validateForm()">
+                            <div class="mb-3">
+                                <label for="userName">Username</label>
+                                    <input type="text" class="form-control" id="userName" placeholder="Username" th:field="*{userName}"
+                                           required="true" pattern="[A-Za-z]+[\w]+" minlength="3" maxlength="30"
+                                           onfocus="showHint(this);" onblur="hideHint(this);">
+                                    <div class="hideHint" style="width: 100%;" id="userNameHint">
+                                        Username have to contains min 3 characters<br/>
+                                        Username could contains only letters and digits<br/>
+                                        Username have to start with letters
+                                    </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="firstName">First name</label>
+                                    <input type="text" class="form-control" id="firstName" placeholder="First name" th:field="*{firstName}"
+                                           required="true" pattern="[A-Za-z]+" minlength="2" maxlength="30"
+                                           onfocus="showHint(this);" onblur="hideHint(this);">
+                                    <div class="hideHint" style="width: 100%;" id="firstNameHint">
+                                        Firstname could contains only letters<br/>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="lastName">Last name</label>
+                                    <input type="text" class="form-control" id="lastName" placeholder="Last name" th:field="*{lastName}"
+                                           required="true" pattern="[A-Za-z]+" minlength="2" maxlength="30"
+                                           onfocus="showHint(this);" onblur="hideHint(this);">
+                                    <div class="hideHint" style="width: 100%;" id="lastNameHint">
+                                        Last name could contains only letters<br/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="password">Password<span class="text-muted"></span></label>
+                                <input type="password" class="form-control" id="password"
+                                       th:placeholder="*{password != null} ? 'Please enter new password' : 'Please enter password'"
+                                       th:field="*{password}" th:required="*{password != null ? false : true }"
+                                       pattern="(?=\S*[1-9])(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[!@#$%^7*()\-+;:<>,_=\.\?\\|\/{}'\[\]]).{6,30}" minlength="6" maxlength="30"
+                                       onfocus="showHint(this);" onblur="hideHint(this);">
+                                <div class="hideHint" style="width: 100%;" id="passwordHint">
+                                    Password have to contains min 6 characters<br/>
+                                    Password have to contains capital letter, small letter, digit and special character (!%# etc.)<br/>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="rpassword">Repeat password<span class="text-muted"></span></label>
+                                <input type="password" class="form-control" id="rpassword" placeholder="Please repeat password"
+                                       th:field="*{repeatedPassword}" th:required="*{password != null ? false : true }"
+                                       required="true" pattern="(?=\S*[1-9])(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[!@#$%^7*()\-+;:<>,_=\.\?\\|\/{}'\[\]]).{6,30}" minlength="6" maxlength="30"
+                                       onfocus="showHint(this);" onblur="hideHint(this);">
+                                <div class="hideHint" style="width: 100%;" id="rpasswordHint">
+                                    Repeated password have to be the same like password<br/>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <label for="groups">Select user groups<span class="text-muted"></span></label>
+                                        <div>
+                                            <select onfocus="showHint(this);" onblur="hideHint(this);" id="groups" th:field="*{groupsName}"
+                                                    required multiple="multiple" style="width: 100%; overflow-y: auto;" class="form-control">
+                                                <option th:each="group : ${groupList}" th:value="${group.getId()}" th:text="${group.getName()}"></option>
+                                            </select>
+                                        </div>
+                                        <div class="hideHint" style="width: 100%;" id="groupsHint">
+                                            To select several group please use ctrl and select group
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div  id="accordion">
+                                    <div>
+                                        <div >
+                                            <h4>
+                                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseDate" class="collapsed" onclick="getYearsList();" >
+                                                    <input class="form-control" type="text" id="date" th:placeholder="*{DateOfBirth == null} ? 'select birth day' : *{DateOfBirth} " disabled required >
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapseDate" class="panel-collapse collapse" style="height: 0px;">
+                                            <div class="panel-body">
+                                                <div class="col-md-8" id="dateSelector">
+                                                    <select id="years" onchange="getMothsList();" required>
+                                                        <option disabled selected>Select year</option>
+                                                    </select>
+                                                    <select id="months"  onchange="getDaysList(this.value);" required>
+                                                        <option disabled selected>Select month</option>
+                                                    </select>
+                                                    <select id="days" onchange="daySelect();" required>
+                                                        <option disabled selected>Select day</option>
+                                                    </select>
+                                                    <input type="text" id="hiddenDate" th:field="*{stringDate}" style="display: none;" class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="text"  th:field="*{userId}" style="display: none">
+                            <div class=" row">
+                                <div id="errors" class="col-md-8"></div>
+                                <div th:if="${#fields.hasAnyErrors()}" class="col-md-8">
+                                    Incorrect data was found in form. Please insert correct data according to displayed hints
+                                </div>
+                                <div th:if="${result != null}" th:text="${result}"></div>
+                            </div>
+                            <hr class="mb-4">
+                            <button class="btn btn-primary btn-lg btn-block" type="submit" th:text="${userForm.getUserId() > 0} ? 'Change user details' : 'Add user'">Add user</button>
+                        </form>
+                    </div>
+                </div>
+              
+                 <!-- /. ROW  -->           
+            </div>
+             <!-- /. PAGE INNER  -->
+            </div>
+         <!-- /. PAGE WRAPPER  -->
+        </div>
+     <!-- /. WRAPPER  -->
+    <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
+    <!-- JQUERY SCRIPTS -->
+
+    <script src="/js/jquery-1.10.2.js"></script>
+      <!-- BOOTSTRAP SCRIPTS -->
+    <script src="/js/bootstrap.min.js"></script>
+    <!-- METISMENU SCRIPTS -->
+    <script src="/js/jquery.metisMenu.js"></script>
+    <script src="/js/bootstrap-select.js"></script>
+      <!-- CUSTOM SCRIPTS -->
+    <script src="/js/custom.js"></script>
+    <script src="/js/myScripts.js"></script>
+
+</body>
+</html>
